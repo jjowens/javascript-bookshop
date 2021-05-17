@@ -32,10 +32,26 @@
     @apply rounded bg-blue-200 p-2
  }
 
+ .orange-button {
+   @apply rounded bg-yellow-500 p-2
+}
+
  .genre-tag {
     @apply rounded capitalize bg-blue-400 mr-2 p-2 text-white text-xs
  }
 
+ .genre-tag-highlight {
+   @apply bg-blue-200
+}
+
  .sidebar-widget {
    @apply bg-blue-50 border-blue-200 border-2 m-1 p-2 rounded
+ }
+
+ .filter-text {
+   @apply capitalize cursor-pointer p-1 text-sm mt-1 mb-1 cursor-pointer
+ }
+
+ .filter-highlight {
+    @apply bg-blue-200 rounded
  }

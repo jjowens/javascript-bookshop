@@ -11,7 +11,8 @@ let obj = Vue.component('book-widget', {
         </div>
         <div class="float-right m-2">
             £{{ book.price }}<br/>
-            <button class='blue-button' v-on:click="$emit('add-to-basket', book)">Add To Basket</button><br/>
+            <button class='blue-button' v-on:click="$emit('add-to-basket', book)" v-show="!book.AddedToBasket">Add To Basket</button>
+            <button class='orange-button' v-on:click="$emit('removefrom-basket', book)" v-show="book.AddedToBasket">Remove</button>
         </div>
         <div class="clear-both bg-blue-200">
             <span v-for="genre in book.genres" v-bind:genre="genre" class="genre-tag cursor-pointer" v-on:click="$emit('filter-genre', genre)">{{ genre.name }} </span>

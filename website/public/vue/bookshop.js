@@ -32,7 +32,7 @@ let vm = new Vue({
             .then(function (response) {
                 let tempBooks = response.data.books;
 
-                tempBooks = tempBooks.map(self.addProps);
+                tempBooks = tempBooks.map(self.addBookProps);
                 tempBooks = tempBooks.map(self.addGenreListProp);
 
                 tempBooks.forEach(book => {
@@ -53,6 +53,11 @@ let vm = new Vue({
             obj.HideFlag = false;
             return obj;
         },
+        addBookProps: function(obj) {
+            obj.HideFlag = false;
+            obj.AddedToBasket = false;
+            return obj;
+        },
         addGenreProps: function(obj) {
             let newObj = {};
             newObj.name = obj;
@@ -67,53 +72,71 @@ let vm = new Vue({
             let item = {};
             item.book = obj;
             item.quantity = 1;
-
-            this.shoppingbasket.total = this.shoppingbasket.total + obj.price;
-            this.shoppingbasket.totalStr = this.shoppingbasket.currency + this.shoppingbasket.total.toFixed(2);
-
+            obj.AddedToBasket = true;
             this.shoppingbasket.items.push(obj);
+
+            this.updateShoppingBasketTotal();
+        },
+        onRemoveFromBasket: function(obj) {
+            let newObj = this.shoppingbasket.items.find(item => item.title === obj.title);
+            let idx = this.shoppingbasket.items.indexOf(newObj);
+
+            console.log(idx);
+
+            if (idx > -1) {
+                this.shoppingbasket.items.splice(idx, 1);
+                console.log(idx);
+                obj.AddedToBasket = false;
+            }
+            this.updateShoppingBasketTotal();
+        },
+        updateShoppingBasketTotal: function() {
+            let total = 0;
+            this.shoppingbasket.items.map(function(item) { total += item.price; });
+
+            this.shoppingbasket.total = total;
+            this.shoppingbasket.totalStr = this.shoppingbasket.currency + total.toFixed(2); 
         },
         onClearBasket: function() {
             this.shoppingbasket.items = [];
             this.shoppingbasket.total = 0;
             this.shoppingbasket.totalStr = this.shoppingbasket.currency + this.shoppingbasket.total.toFixed(2);
+            this.books.map(book => book.AddedToBasket = false);
         },
         onFilterGenre: function(obj) {
-            let searchResults = this.filteredGenres.find(el => el.name === obj.name);
+            let searchObj =  this.genres.find(el => el.name === obj.name);
 
-            if (searchResults !== undefined) {
-                let deleteIdx = this.filteredGenres.indexOf(searchResults);
-                this.filteredGenres.splice(deleteIdx, 1);
-
-                obj.HideFlag = true;
-            } else {
-                obj.HideFlag = true;
-                this.filteredGenres.push(obj);
+            if (searchObj !== undefined) {
+                searchObj.HideFlag = !searchObj.HideFlag;
             }
 
             this.onFilterBooks();
         },
         onFilterBooks: function() {
-            let hideFlag = !(this.filteredGenres.length === 0);
+            let filterGenres = this.genres.filter(el => el.HideFlag === true);
+            let hideFlag = (filterGenres.length > 0);
 
             this.books.map(book => {
                 book.HideFlag = hideFlag;
             });
 
-            this.filteredGenres.forEach(genre => {
-                let bookGenres = this.books.filter(book => book.GenreList.indexOf(genre.name) > -1 && book.HideFlag === true);
+            if (filterGenres !== undefined) {
+                for (let filterIdx = 0; filterIdx < filterGenres.length; filterIdx++) {
+                    const filterGenre = filterGenres[filterIdx];
 
-                if (bookGenres.length > -1) {
-                    bookGenres.map(book => {
-                        book.HideFlag = false;
-                    });
+                    let bookGenres = this.books.filter(book => book.GenreList.indexOf(filterGenre.name) > -1);
+
+                    if (bookGenres.length > -1) {
+                        bookGenres.map(book => {
+                            book.HideFlag = false;
+                        });
+                    }
                 }
-                console.log("Filtered Genre: " + genre.name);
-            });
+            }            
         },
         onClearGenreFilter: function() {
-            this.filteredGenres = [];
             this.books.map(book => book.HideFlag = false);
+            this.genres.map(book => book.HideFlag = false);
         }
     },
     mounted: function() {

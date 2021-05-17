@@ -2,9 +2,12 @@ let obj = Vue.component('genres-widget', {
     props: ['genres'],
     template: `
         <div>
-            <p class="capitalize cursor-pointer" v-on:click="$emit('clear-genrefilter')">Clear All</p>
+            <p class="filter-text" v-on:click="$emit('clear-genrefilter')">Clear All</p>
             <p v-for="genre in genres" 
-            v-bind:genre="genre" class="capitalize cursor-pointer" v-on:click="$emit('filter-genre', genre)">{{ genre.name }} {{ genre.HideFlag }}</p>
+            v-bind:genre="genre" class="filter-text" 
+            v-on:click="$emit('filter-genre', genre)"
+            v-bind:class="{ 'filter-highlight': genre.HideFlag }"
+            >{{ genre.name }}</p>
         </div>
     `
   });
