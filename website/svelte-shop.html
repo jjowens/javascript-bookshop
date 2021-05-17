@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookshop Svelte</title>
+    <link rel="stylesheet" type="text/css" href="public/css/default.css" media="screen"/> 
+</head>
+<body>
+    <div id="app" class="m-2">
+        <div class="p-2">
+            <div class="float-left">
+                <h1 class="text-3xl">Bookshop Svelte</h1>
+            </div>
+            <div class="float-left ml-6">
+                (Shopping Basket)
+            </div>
+        </div>
+        <div class="clear-both"></div>
+        <div class="float-left">
+            <!-- genres -->
+            <div>
+                (Genres Widget)
+            </div>
+
+            <!-- authors -->
+            <div class="mt-2">
+                (Authors Widget)
+            </div>
+        </div>
+        <div class="flex flex-wrap">
+            (Books Widget)
+        </div>
+    </div>
+</body>
+<script src="public/vue/lib/vue.min.js"></script>
+<script type="text/javascript" src="public/axios/axios.min.js"></script>
+<script type="module" src="public/vue/bookshop.js" type="module"></script>
+</html>

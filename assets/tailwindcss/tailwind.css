@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+.bookshop-widget {
+   @apply rounded bg-gray-200 p-2 m-2 w-1/4 
+}
+
+.bookshop-widget p {
+   @apply text-3xl text-center
+}
+
 .book-widget {
    @apply bg-gray-50 border-gray-200 border-2 m-2 w-64 rounded
 }
