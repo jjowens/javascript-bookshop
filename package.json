@@ -1,0 +1,27 @@
+{
+  "name": "javascript-bookshop",
+  "version": "1.0.0",
+  "description": "A mock bookshop with various javascript frameworks. It has the same data set but willl use diffferent javascript frameworks to load data.",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "exportjson": "node.exe .\\assets\\ExcelToJSON.js",
+    "tailwind-dev": "npx tailwindcss-cli@latest build ./assets/tailwindcss/tailwind.css -c ./assets/tailwindcss/tailwind.toggle.config.js -o ./website/public/css/default.css",
+    "tailwind-prod": "npx tailwindcss-cli@latest build ./assets/tailwindcss/tailwind.css -c ./assets/tailwindcss/tailwind.toggle.config.js -o ./website/public/css/default.css --purge=true"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jjowens/javascript-bookshop.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jjowens/javascript-bookshop/issues"
+  },
+  "homepage": "https://github.com/jjowens/javascript-bookshop#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "vue": "^2.6.12",
+    "xlsx": "^0.17.0"
+  }
+}

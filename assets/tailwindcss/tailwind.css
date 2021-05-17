@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.book-widget {
+   @apply bg-gray-50 border-gray-200 border-2 m-2 w-64 rounded
+}
+
+.book-widget h3 {
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+
+ .book-widget div:first-of-type {
+    @apply bg-gray-100 p-3
+ }
+
+ .book-widget div:last-of-type {
+    @apply p-3
+ }
+
+ .blue-button {
+    @apply rounded bg-blue-200 p-2
+ }
+
+ .genre-tag {
+    @apply rounded capitalize bg-blue-400 mr-2 p-2 text-white text-xs
+ }
+
+ .sidebar-widget {
+   @apply bg-blue-50 border-blue-200 border-2 m-1 p-2 rounded
+ }
