@@ -9,14 +9,14 @@ let vm = new Vue({
         books: [],
         authors: [],
         genres: [],
-        testMessage: 'This is a test',
         shoppingbasket: {
             items: [],
             total: 0,
             currency: "£",
             totalStr: "£0.00"
         },
-        filteredGenres: []
+        filteredGenres: [],
+        filteredAuthorsTest: []
     },
     components: {
         'book-widget': BookWidget,
@@ -30,10 +30,17 @@ let vm = new Vue({
 
             axios.get('public/data/data.json')
             .then(function (response) {
-                console.log(response.data.books);
-                self.books = response.data.books;
-                self.authors = response.data.authors;
-                self.genres = response.data.genres;
+                let tempBooks = response.data.books;
+
+                tempBooks = tempBooks.map(self.addProps);
+                tempBooks = tempBooks.map(self.addGenreListProp);
+
+                tempBooks.forEach(book => {
+                    book.genres = book.genres.map(self.addGenreProps);
+                });
+
+                self.books = tempBooks;
+                self.genres = response.data.genres.map(self.addGenreProps);
             }).catch(function (error) {
                 console.log("Exception caught");
                 console.log(error);
@@ -41,6 +48,20 @@ let vm = new Vue({
             .then(function () {
                 
             });
+        },
+        addProps: function(obj) {
+            obj.HideFlag = false;
+            return obj;
+        },
+        addGenreProps: function(obj) {
+            let newObj = {};
+            newObj.name = obj;
+            newObj.HideFlag = false;
+            return newObj;
+        },
+        addGenreListProp: function(obj) {
+            obj.GenreList = obj.genres.join(", ");
+            return obj;
         },
         onAddToBasket: function(obj) {
             let item = {};
@@ -58,21 +79,47 @@ let vm = new Vue({
             this.shoppingbasket.totalStr = this.shoppingbasket.currency + this.shoppingbasket.total.toFixed(2);
         },
         onFilterGenre: function(obj) {
-            this.filteredGenres.push(obj);
-            console.log({obj});
+            let searchResults = this.filteredGenres.find(el => el.name === obj.name);
+
+            if (searchResults !== undefined) {
+                let deleteIdx = this.filteredGenres.indexOf(searchResults);
+                this.filteredGenres.splice(deleteIdx, 1);
+
+                obj.HideFlag = true;
+            } else {
+                obj.HideFlag = true;
+                this.filteredGenres.push(obj);
+            }
+
+            this.onFilterBooks();
+        },
+        onFilterBooks: function() {
+            let hideFlag = !(this.filteredGenres.length === 0);
+
+            this.books.map(book => {
+                book.HideFlag = hideFlag;
+            });
+
+            this.filteredGenres.forEach(genre => {
+                let bookGenres = this.books.filter(book => book.GenreList.indexOf(genre.name) > -1 && book.HideFlag === true);
+
+                if (bookGenres.length > -1) {
+                    bookGenres.map(book => {
+                        book.HideFlag = false;
+                    });
+                }
+                console.log("Filtered Genre: " + genre.name);
+            });
+        },
+        onClearGenreFilter: function() {
+            this.filteredGenres = [];
+            this.books.map(book => book.HideFlag = false);
         }
     },
     mounted: function() {
         this.getData();
     },
     computed: {
-        sortedAuthors: function() {
-            return this.authors.sort((a,b) => {
-                if(a.lastname < b.lastname) return -1;
-                if(a.lastname > b.lastname) return 1;
-                return 0;
-            });
-        },
         sortedGenres: function() {
             return this.genres.sort((a,b) => {
                 if(a < b) return -1;

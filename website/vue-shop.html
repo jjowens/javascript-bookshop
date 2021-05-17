@@ -24,12 +24,10 @@
         <div class="float-left">
             <!-- genres -->
             <div>
-                <genres-widget v-bind:genres="sortedGenres" class="sidebar-widget" v-on:filter-genre="onFilterGenre"></genres-widget>
-            </div>
-
-            <!-- authors -->
-            <div class="mt-2">
-                <authors-widget v-bind:authors="sortedAuthors" class="sidebar-widget"></authors-widget>
+                <genres-widget v-bind:genres="sortedGenres" class="sidebar-widget" 
+                v-on:filter-genre="onFilterGenre"
+                v-on:clear-genrefilter="onClearGenreFilter"
+                ></genres-widget>
             </div>
         </div>
         <div class="flex flex-wrap">
@@ -37,6 +35,7 @@
                 v-for="book in sortedBooks" 
                 v-bind:book="book"
                 v-on:add-to-basket="onAddToBasket"
+                v-on:filter-genre="onFilterGenre"
             ></book-widget>
         </div>
     </div>

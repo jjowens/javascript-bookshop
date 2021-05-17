@@ -31831,6 +31831,21 @@ video {
   --tw-backdrop-sepia: sepia(100%);
 }
 
+.bookshop-widget {
+  --tw-bg-opacity: 1;
+  background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
+  border-radius: 0.25rem;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  width: 25%
+}
+
+.bookshop-widget p {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  text-align: center
+}
+
 .book-widget {
   --tw-bg-opacity: 1;
   background-color: rgba(249, 250, 251, var(--tw-bg-opacity));
